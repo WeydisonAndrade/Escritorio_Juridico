@@ -157,6 +157,10 @@
         </section>
     </div>
 
+    <!-- Supabase: config, biblioteca e cliente (ordem obrigatória) -->
+    <script src="static/js/config.supabase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="static/js/supabaseClient.js"></script>
     <script>
         /**
          * Proteção: redireciona para login se não houver sessão.
@@ -166,8 +170,7 @@
                 window.location.href = 'login.html';
                 return;
             }
-            var nome = sessionStorage.getItem('usuarioNome');
-            if (nome) document.getElementById('saudacao').textContent = 'Olá, ' + nome + '.';
+            var nome = sessionStorage.getItem('usuarioNome');            if (nome) document.getElementById('saudacao').textContent = 'Olá, ' + nome + '.';
             document.getElementById('btn-sair').addEventListener('click', function (e) {
                 e.preventDefault();
                 sessionStorage.removeItem('logado');

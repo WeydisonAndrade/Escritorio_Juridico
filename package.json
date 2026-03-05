@@ -1,0 +1,9 @@
+{
+  "name": "escritorio-advocacia",
+  "version": "1.0.0",
+  "description": "Site e dashboard do escritório de advocacia trabalhista",
+  "private": true,
+  "dependencies": {
+    "@supabase/supabase-js": "^2.98.0"
+  }
+}

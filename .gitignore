@@ -1,0 +1,9 @@
+# Credenciais Supabase (não versionar a chave)
+static/js/config.supabase.js
+
+# Ambiente
+.env
+.env.local
+
+# Dependências
+node_modules/
