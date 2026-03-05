@@ -38,15 +38,18 @@
             <h1 class="font-serif text-2xl md:text-3xl font-bold text-navy mb-1">Acesso Restrito</h1>
             <p class="text-navy-light/70 text-sm mb-8">Entre com suas credenciais para acessar o painel.</p>
 
-            <form action="/login" method="POST" class="space-y-6">
+            <!-- Mensagem de erro (alertas elegantes, sem window.alert) -->
+            <div id="mensagem-erro" class="hidden mb-6 p-4 rounded-lg text-sm bg-red-50 text-red-700 border border-red-200"></div>
+
+            <form id="form-login" class="space-y-6">
                 <div>
-                    <label for="usuario" class="block text-navy font-semibold mb-2 text-sm">Usuário</label>
-                    <input type="text"
-                           id="usuario"
-                           name="usuario"
+                    <label for="email" class="block text-navy font-semibold mb-2 text-sm">E-mail</label>
+                    <input type="email"
+                           id="email"
+                           name="email"
                            required
-                           autocomplete="username"
-                           placeholder="Digite seu usuário"
+                           autocomplete="email"
+                           placeholder="seu@email.com"
                            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all placeholder:text-gray-400">
                 </div>
                 <div>
@@ -65,10 +68,67 @@
                 </button>
             </form>
 
-            <p class="mt-6 text-center text-navy-light/60 text-xs">
-                Justiça Trabalhista · Área administrativa
+            <p class="mt-6 text-center text-navy-light/60 text-sm">
+                Ainda não tem conta? <a href="cadastro.html" class="text-gold font-semibold hover:underline">Cadastrar</a> · Justiça Trabalhista
             </p>
         </div>
     </div>
+
+    <script>
+        /**
+         * Login — validação contra dados salvos no localStorage (sem backend).
+         * Fonte dos dados: localStorage.getItem('advogadoEscritorio') — mesmo objeto salvo no cadastro.
+         */
+        (function () {
+            var form = document.getElementById('form-login');
+            var msgErro = document.getElementById('mensagem-erro');
+
+            function mostrarErro(texto) {
+                msgErro.textContent = texto;
+                msgErro.classList.remove('hidden');
+            }
+
+            function esconderErro() {
+                msgErro.classList.add('hidden');
+                msgErro.textContent = '';
+            }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                esconderErro();
+
+                var email = document.getElementById('email').value.trim().toLowerCase();
+                var senha = document.getElementById('senha').value;
+
+                // Busca o objeto do advogado salvo no cadastro (persistido no localStorage)
+                var dadosSalvos = localStorage.getItem('advogadoEscritorio');
+                if (!dadosSalvos) {
+                    mostrarErro('Nenhum usuário cadastrado. Faça seu cadastro primeiro.');
+                    return;
+                }
+
+                var advogado;
+                try {
+                    advogado = JSON.parse(dadosSalvos);
+                } catch (err) {
+                    mostrarErro('Dados de acesso inválidos. Faça o cadastro novamente.');
+                    return;
+                }
+
+                // Verifica se e-mail e senha batem com os salvos
+                if (advogado.email !== email || advogado.senha !== senha) {
+                    mostrarErro('E-mail ou senha incorretos. Tente novamente.');
+                    return;
+                }
+
+                // Login válido: marca sessão e redireciona para o dashboard
+                sessionStorage.setItem('logado', 'true');
+                sessionStorage.setItem('usuarioNome', advogado.nome);
+                sessionStorage.setItem('usuarioEmail', advogado.email);
+
+                window.location.href = 'dashboard.html';
+            });
+        })();
+    </script>
 </body>
 </html>
