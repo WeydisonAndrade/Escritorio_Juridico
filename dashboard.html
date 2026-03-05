@@ -3,51 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Controle - Escritório</title>
+    <title>Central de Controle | Escritório Trabalhista</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
-        .card { background: white; padding: 20px; margin-bottom: 10px; border-radius: 8px; border-left: 5px solid #D4AF37; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .data { font-size: 12px; color: gray; }
-        .btn-logout { background: #0a192f; color: gold; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; }
-        .btn-logout:hover { opacity: 0.9; }
+        :root {
+            --navy: #0f172a;
+            --navy-light: #1e293b;
+            --navy-card: #1a2744;
+            --gold: #b8860b;
+            --gold-light: #daa520;
+            --white: #f8fafc;
+            --white-muted: rgba(248, 250, 252, 0.85);
+            --red-alert: #dc2626;
+        }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--navy); color: var(--white); margin: 0; padding: 20px; min-height: 100vh; }
+        .btn-logout { background: var(--gold); color: var(--navy); padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-logout:hover { background: var(--gold-light); }
+
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
+        .dashboard-header h1 { margin: 0; font-size: 1.5rem; color: var(--gold); display: flex; align-items: center; gap: 10px; }
+        .saudacao { color: var(--white-muted); margin-bottom: 24px; font-size: 0.95rem; }
+
+        .secao-titulo { font-size: 1rem; color: var(--gold); margin: 0 0 14px 0; display: flex; align-items: center; gap: 8px; font-weight: 600; }
+        .card-panel { background: var(--navy-light); border-radius: 10px; padding: 20px; border: 1px solid rgba(184, 134, 11, 0.2); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .card-panel h3 { color: var(--white); font-size: 0.9rem; margin: 0 0 12px 0; font-weight: 600; }
+
+        /* Grid estilo Power BI */
+        .grid-dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 1400px; margin: 0 auto; }
+        @media (max-width: 900px) { .grid-dashboard { grid-template-columns: 1fr; } }
+        .grid-full { grid-column: 1 / -1; }
+        .grafico-container { position: relative; height: 260px; width: 100%; }
+        .grafico-container-sm { height: 200px; }
+        .gauge-container { position: relative; height: 220px; width: 100%; display: flex; align-items: center; justify-content: center; }
+        .gauge-valor { position: absolute; font-size: 2rem; font-weight: 700; color: var(--gold); }
+
+        /* Triagem — mantida, tema escuro */
+        .dashboard-layout { display: flex; gap: 24px; flex-wrap: wrap; max-width: 1400px; margin: 0 auto; }
+        .filtros-laterais {
+            flex: 0 0 200px;
+            background: var(--navy-light);
+            border-radius: 10px;
+            padding: 16px;
+            border: 1px solid rgba(184, 134, 11, 0.2);
+        }
+        .filtros-laterais h3 { margin: 0 0 12px 0; font-size: 12px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.05em; }
+        .filtros-laterais button {
+            display: block; width: 100%; text-align: left; padding: 10px 12px; margin-bottom: 6px;
+            border: 1px solid rgba(184, 134, 11, 0.3); border-radius: 6px;
+            background: var(--navy-card); color: var(--white-muted); cursor: pointer; font-size: 13px;
+        }
+        .filtros-laterais button:hover { background: var(--navy); color: var(--gold); }
+        .filtros-laterais button.ativo { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+
+        .conteudo-principal { flex: 1; min-width: 280px; }
+        .card-triagem {
+            background: var(--navy-light);
+            padding: 18px;
+            margin-bottom: 14px;
+            border-radius: 8px;
+            border-left: 4px solid var(--gold);
+            border: 1px solid rgba(184, 134, 11, 0.2);
+            border-left: 4px solid var(--gold);
+        }
+        .card-triagem .card-nome { font-weight: 600; color: var(--white); margin: 0 0 6px 0; }
+        .card-triagem .card-data { font-size: 12px; color: var(--white-muted); }
+        .card-triagem .card-trecho { font-size: 13px; color: var(--white-muted); line-height: 1.5; margin: 0; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .badge-acidente { background: rgba(220, 38, 38, 0.25); color: #fca5a5; }
+        .badge-horas-extras { background: rgba(34, 197, 94, 0.25); color: #86efac; }
+        .badge-rescisao { background: rgba(168, 85, 247, 0.25); color: #e9d5ff; }
+
+        /* Tabela Prazos Críticos — alerta pulsante */
+        .tabela-prazos { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .tabela-prazos th { text-align: left; padding: 12px 10px; color: var(--gold); font-weight: 600; border-bottom: 1px solid rgba(184, 134, 11, 0.3); }
+        .tabela-prazos td { padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.08); color: var(--white-muted); }
+        .tabela-prazos tr.critico { background: rgba(220, 38, 38, 0.12); }
+        .tabela-prazos tr.critico td { color: #fecaca; }
+        .pulso-vermelho { animation: pulso 1.5s ease-in-out infinite; }
+        @keyframes pulso { 0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.5); } 50% { box-shadow: 0 0 0 8px rgba(220, 38, 38, 0); } }
+        .celula-alerta { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; border-radius: 6px; background: rgba(220, 38, 38, 0.2); color: #fca5a5; font-weight: 600; box-sizing: border-box; }
+        .sem-prazos { color: var(--white-muted); padding: 20px; text-align: center; font-size: 14px; }
+
+        .lista-contatos { color: var(--white-muted); font-size: 14px; }
     </style>
 </head>
 <body>
-    <div style="max-width: 800px; margin: 0 auto;">
-        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-            <h1>Mensagens Recebidas</h1>
-            <a href="login.html" id="btn-sair" class="btn-logout">Sair</a>
+    <div style="max-width: 1400px; margin: 0 auto;">
+        <header class="dashboard-header">
+            <h1><i class="fas fa-gavel"></i> Central de Controle</h1>
+            <a href="login.html" id="btn-sair" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Sair</a>
         </header>
+        <p id="saudacao" class="saudacao"></p>
 
-        <p id="saudacao" style="color: #555; margin-bottom: 20px;"></p>
-
-        <div id="lista-contatos">
-            <p>Nenhum contato recebido ainda.</p>
+        <!-- Bloco 1: Produtividade + Gauge + Financeiro -->
+        <div class="grid-dashboard">
+            <div class="card-panel">
+                <h3><i class="fas fa-users"></i> Produtividade por Advogado</h3>
+                <div class="grafico-container">
+                    <canvas id="chart-barras-empilhadas"></canvas>
+                </div>
+            </div>
+            <div class="card-panel">
+                <h3><i class="fas fa-chart-pie"></i> Taxa de Conversão de Leads</h3>
+                <div class="gauge-container">
+                    <span id="gauge-valor" class="gauge-valor">0%</span>
+                    <canvas id="chart-gauge"></canvas>
+                </div>
+            </div>
+            <div class="card-panel grid-full">
+                <h3><i class="fas fa-coins"></i> Gestão Financeira — Custo Operacional vs. Receita (mensal)</h3>
+                <div class="grafico-container grafico-container-sm">
+                    <canvas id="chart-financeiro"></canvas>
+                </div>
+            </div>
         </div>
+
+        <!-- Prazos Críticos (48h) -->
+        <section class="card-panel" style="margin-top: 24px;">
+            <h3><i class="fas fa-exclamation-triangle"></i> Prazos Críticos — próximas 48 horas</h3>
+            <div id="tabela-prazos-wrapper">
+                <table class="tabela-prazos" id="tabela-prazos">
+                    <thead>
+                        <tr>
+                            <th>Processo / Descrição</th>
+                            <th>Prazo</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo-prazos"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Triagem de Novos Casos -->
+        <section class="dashboard-layout" style="margin-top: 32px;">
+            <aside class="filtros-laterais">
+                <h3><i class="fas fa-filter"></i> Categoria</h3>
+                <button type="button" class="btn-filtro ativo" data-categoria="">Todos</button>
+                <button type="button" class="btn-filtro" data-categoria="Acidente de Trabalho">Acidente de Trabalho</button>
+                <button type="button" class="btn-filtro" data-categoria="Horas Extras">Horas Extras</button>
+                <button type="button" class="btn-filtro" data-categoria="Rescisão Indireta">Rescisão Indireta</button>
+            </aside>
+            <div class="conteudo-principal">
+                <h2 class="secao-titulo"><i class="fas fa-folder-open"></i> Triagem de Novos Casos</h2>
+                <div id="lista-triagem"></div>
+            </div>
+        </section>
+
+        <section style="margin-top: 32px;">
+            <h2 class="secao-titulo"><i class="fas fa-envelope"></i> Mensagens Recebidas</h2>
+            <div id="lista-contatos" class="lista-contatos">Nenhum contato recebido ainda.</div>
+        </section>
     </div>
 
     <script>
         /**
-         * Proteção da página: dados de sessão vêm do sessionStorage (preenchido no login.html).
-         * Se não houver 'logado', o usuário é redirecionado para login.
+         * Proteção: redireciona para login se não houver sessão.
          */
         (function () {
-            var logado = sessionStorage.getItem('logado');
-            if (logado !== 'true') {
+            if (sessionStorage.getItem('logado') !== 'true') {
                 window.location.href = 'login.html';
                 return;
             }
-
-            // Exibe saudação com o nome salvo no login (origem: localStorage → sessionStorage no login)
             var nome = sessionStorage.getItem('usuarioNome');
-            if (nome) {
-                var el = document.getElementById('saudacao');
-                if (el) el.textContent = 'Olá, ' + nome + '.';
-            }
-
-            /**
-             * Sair: limpa a sessão (sessionStorage) e redireciona para a tela de login.
-             */
+            if (nome) document.getElementById('saudacao').textContent = 'Olá, ' + nome + '.';
             document.getElementById('btn-sair').addEventListener('click', function (e) {
                 e.preventDefault();
                 sessionStorage.removeItem('logado');
@@ -56,6 +176,212 @@
                 window.location.href = 'login.html';
             });
         })();
+
+        /**
+         * Dados centralizados para a central de controle.
+         * Aqui scripts Python poderão injetar os dados processados futuramente (ex.: configuracoesGestao = dadosDoBackend).
+         */
+        var configuracoesGestao = {
+            produtividadeAdvogados: [
+                { advogado: 'Dr. Ana Costa', processosAtivos: 24, prazosConcluidos: 18 },
+                { advogado: 'Dr. Bruno Lima', processosAtivos: 19, prazosConcluidos: 22 },
+                { advogado: 'Dra. Carla Mendes', processosAtivos: 31, prazosConcluidos: 15 }
+            ],
+            taxaConversaoLeads: 34,
+            custoVsReceita: [
+                { mes: 'Set', custo: 42, receita: 68 },
+                { mes: 'Out', custo: 45, receita: 72 },
+                { mes: 'Nov', custo: 48, receita: 78 },
+                { mes: 'Dez', custo: 52, receita: 85 },
+                { mes: 'Jan', custo: 50, receita: 92 },
+                { mes: 'Fev', custo: 55, receita: 88 }
+            ],
+            prazosCriticos: [
+                { descricao: 'Recurso TRT — Processo 0001234-5', dataHora: '05/03/2026 10:00', critico: true },
+                { descricao: 'Contestação — Processo 0001567-8', dataHora: '05/03/2026 18:00', critico: true },
+                { descricao: 'Alegações finais — Processo 0001890-1', dataHora: '06/03/2026 09:30', critico: true }
+            ]
+        };
+
+        var relatosRecebidos = [
+            { nome: 'Maria Silva', data: '02/03/2026 14:30', trechoRelevante: 'Sofri um acidente na empresa ao escorregar no piso molhado, sem sinalização. Fiquei afastada por 45 dias.', categoria: 'Acidente de Trabalho' },
+            { nome: 'João Santos', data: '01/03/2026 09:15', trechoRelevante: 'Trabalho há 3 anos fazendo horas extras que nunca foram pagas nem banco de horas. Quero regularização.', categoria: 'Horas Extras' },
+            { nome: 'Ana Oliveira', data: '28/02/2026 16:00', trechoRelevante: 'Fui demitida após negar cumprir ordem ilegal. Entendo que configura rescisão indireta e quero meus direitos.', categoria: 'Rescisão Indireta' },
+            { nome: 'Carlos Mendes', data: '27/02/2026 11:20', trechoRelevante: 'Machuquei a coluna carregando peso sem EPI. A empresa não forneceu equipamento e exige produção acima do seguro.', categoria: 'Acidente de Trabalho' },
+            { nome: 'Fernanda Costa', data: '26/02/2026 08:45', trechoRelevante: 'Trabalho em escala 12x36 mas as horas excedentes nunca foram computadas. Preciso de orientação sobre o que cobrar.', categoria: 'Horas Extras' },
+            { nome: 'Roberto Lima', data: '25/02/2026 14:00', trechoRelevante: 'Pedi as contas após redução unilateral de salário. Advogado disse que pode ser rescisão indireta. Confirmar.', categoria: 'Rescisão Indireta' }
+        ];
+
+        var NAVY = '#0f172a';
+        var NAVY_LIGHT = '#1e293b';
+        var GOLD = '#b8860b';
+        var GOLD_LIGHT = '#daa520';
+        var WHITE = 'rgba(248, 250, 252, 0.9)';
+        var GOLD_TRANSP = 'rgba(184, 134, 11, 0.25)';
+
+        var chartBarrasEmpilhadas = null;
+        var chartGauge = null;
+        var chartFinanceiro = null;
+
+        function renderizarGraficos(dados) {
+            if (!dados) dados = configuracoesGestao;
+            var cfg = dados;
+
+            var optsComum = { responsive: true, maintainAspectRatio: false };
+            var ticksBrancos = { color: WHITE, font: { size: 11 } };
+            var gridNavy = { color: 'rgba(255,255,255,0.06)' };
+
+            // ——— Barras empilhadas: Produtividade por advogado ———
+            var advogados = (cfg.produtividadeAdvogados || []).map(function (x) { return x.advogado; });
+            var processosAtivos = (cfg.produtividadeAdvogados || []).map(function (x) { return x.processosAtivos; });
+            var prazosConcluidos = (cfg.produtividadeAdvogados || []).map(function (x) { return x.prazosConcluidos; });
+
+            if (chartBarrasEmpilhadas) {
+                chartBarrasEmpilhadas.data.labels = advogados;
+                chartBarrasEmpilhadas.data.datasets[0].data = processosAtivos;
+                chartBarrasEmpilhadas.data.datasets[1].data = prazosConcluidos;
+                chartBarrasEmpilhadas.update();
+            } else {
+                var ctxBar = document.getElementById('chart-barras-empilhadas').getContext('2d');
+                chartBarrasEmpilhadas = new Chart(ctxBar, {
+                    type: 'bar',
+                    data: {
+                        labels: advogados,
+                        datasets: [
+                            { label: 'Processos Ativos', data: processosAtivos, backgroundColor: GOLD, borderColor: GOLD_LIGHT, borderWidth: 1 },
+                            { label: 'Prazos Concluídos', data: prazosConcluidos, backgroundColor: NAVY_LIGHT, borderColor: GOLD, borderWidth: 1 }
+                        ]
+                    },
+                    options: Object.assign({}, optsComum, {
+                        scales: {
+                            x: { stacked: true, ticks: ticksBrancos, grid: { display: false } },
+                            y: { stacked: true, beginAtZero: true, ticks: ticksBrancos, grid: { color: gridNavy } }
+                        },
+                        plugins: {
+                            legend: { labels: { color: WHITE, font: { size: 12 } } },
+                            tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': ' + c.raw; } } }
+                        }
+                    })
+                });
+            }
+
+            // ——— Gauge: Taxa de Conversão de Leads ———
+            var taxa = Math.min(100, Math.max(0, cfg.taxaConversaoLeads || 0));
+            document.getElementById('gauge-valor').textContent = taxa + '%';
+
+            if (chartGauge) {
+                chartGauge.data.datasets[0].data = [taxa, 100 - taxa];
+                chartGauge.update();
+            } else {
+                var ctxGauge = document.getElementById('chart-gauge').getContext('2d');
+                chartGauge = new Chart(ctxGauge, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Convertidos', 'Restante'],
+                        datasets: [{
+                            data: [taxa, 100 - taxa],
+                            backgroundColor: [GOLD, 'rgba(255,255,255,0.08)'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        rotation: 270,
+                        circumference: 180,
+                        cutout: '75%',
+                        plugins: { legend: { display: false } },
+                        tooltip: { callbacks: { label: function(c) { return 'Conversão: ' + (c.dataIndex === 0 ? c.raw + '%' : '—'); } } }
+                    }
+                });
+            }
+
+            // ——— Linhas: Custo Operacional vs Receita ———
+            var meses = (cfg.custoVsReceita || []).map(function (x) { return x.mes; });
+            var custos = (cfg.custoVsReceita || []).map(function (x) { return x.custo; });
+            var receitas = (cfg.custoVsReceita || []).map(function (x) { return x.receita; });
+
+            if (chartFinanceiro) {
+                chartFinanceiro.data.labels = meses;
+                chartFinanceiro.data.datasets[0].data = custos;
+                chartFinanceiro.data.datasets[1].data = receitas;
+                chartFinanceiro.update();
+            } else {
+                var ctxFin = document.getElementById('chart-financeiro').getContext('2d');
+                chartFinanceiro = new Chart(ctxFin, {
+                    type: 'line',
+                    data: {
+                        labels: meses,
+                        datasets: [
+                            { label: 'Custo Operacional', data: custos, borderColor: '#f87171', backgroundColor: 'rgba(248,113,113,0.1)', fill: true, tension: 0.3, pointBackgroundColor: '#f87171' },
+                            { label: 'Receita', data: receitas, borderColor: GOLD, backgroundColor: GOLD_TRANSP, fill: true, tension: 0.3, pointBackgroundColor: GOLD }
+                        ]
+                    },
+                    options: Object.assign({}, optsComum, {
+                        scales: {
+                            y: { beginAtZero: true, ticks: ticksBrancos, grid: { color: gridNavy } },
+                            x: { ticks: ticksBrancos, grid: { color: gridNavy } }
+                        },
+                        plugins: {
+                            legend: { labels: { color: WHITE } },
+                            tooltip: { callbacks: { label: function(c) { return c.dataset.label + ': R$ ' + c.raw + ' mil'; } } }
+                        }
+                    })
+                });
+            }
+        }
+
+        function renderizarPrazosCriticos() {
+            var prazos = configuracoesGestao.prazosCriticos || [];
+            var tbody = document.getElementById('corpo-prazos');
+            if (!prazos.length) {
+                tbody.innerHTML = '<tr><td colspan="3" class="sem-prazos">Nenhum prazo crítico nas próximas 48 horas.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = prazos.map(function (p) {
+                var classe = p.critico ? 'critico' : '';
+                var statusHtml = p.critico
+                    ? '<span class="celula-alerta pulso-vermelho"><i class="fas fa-exclamation-circle"></i> Urgente</span>'
+                    : '<span style="color: var(--white-muted);">Atenção</span>';
+                return '<tr class="' + classe + '"><td>' + p.descricao + '</td><td>' + p.dataHora + '</td><td>' + statusHtml + '</td></tr>';
+            }).join('');
+        }
+
+        (function () {
+            var listaTriagem = document.getElementById('lista-triagem');
+            var botoesFiltro = document.querySelectorAll('.btn-filtro');
+            var categoriaAtiva = '';
+            function classeBadge(cat) {
+                if (cat === 'Acidente de Trabalho') return 'badge badge-acidente';
+                if (cat === 'Horas Extras') return 'badge badge-horas-extras';
+                if (cat === 'Rescisão Indireta') return 'badge badge-rescisao';
+                return 'badge';
+            }
+            function renderizarCards(relatos) {
+                if (!relatos.length) { listaTriagem.innerHTML = '<p style="color:var(--white-muted);">Nenhum caso para este filtro.</p>'; return; }
+                listaTriagem.innerHTML = relatos.map(function (r) {
+                    return '<div class="card-triagem"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:8px;"><span class="' + classeBadge(r.categoria) + '">' + r.categoria + '</span><span class="card-data">' + r.data + '</span></div><p class="card-nome">' + r.nome + '</p><p class="card-trecho">' + r.trechoRelevante + '</p></div>';
+                }).join('');
+            }
+            function aplicarFiltro() {
+                var relatos = categoriaAtiva ? relatosRecebidos.filter(function (r) { return r.categoria === categoriaAtiva; }) : relatosRecebidos;
+                renderizarCards(relatos);
+            }
+            botoesFiltro.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    botoesFiltro.forEach(function (b) { b.classList.remove('ativo'); });
+                    btn.classList.add('ativo');
+                    categoriaAtiva = btn.getAttribute('data-categoria') || '';
+                    aplicarFiltro();
+                });
+            });
+            aplicarFiltro();
+        })();
+
+        if (typeof Chart !== 'undefined') {
+            renderizarGraficos(configuracoesGestao);
+            renderizarPrazosCriticos();
+        }
     </script>
 </body>
 </html>
