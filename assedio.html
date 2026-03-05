@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jurisprudência: Assédio Moral e Dignidade Humana</title>
+    <style>
+        /* Importação de fontes clássicas e modernas */
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --navy: #0a192f;
+            --navy-light: #112240;
+            --gold: #D4AF37;
+            --gold-hover: #f1c40f;
+            --slate: #8892b0;
+            --white: #e6f1ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--navy);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            /* IMAGEM LOCAL: Mantendo o seu caminho configurado */
+            background-image: 
+                linear-gradient(rgba(10, 25, 47, 0.92), rgba(10, 25, 47, 0.92)), 
+                url('images.Adv/justica.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            margin: 0;
+        }
+
+        /* Container Principal */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        /* Cabeçalho Estilo Magistratura */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 40px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .intro-text {
+            font-size: 1.1rem;
+            color: var(--slate);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Grid de Referências Jurídicas */
+        .juridico-grid {
+            display: grid;
+            gap: 25px;
+            margin-bottom: 60px;
+        }
+
+        .card-lei {
+            background-color: var(--navy-light);
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 5px solid var(--gold);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card-lei:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background-color: rgba(17, 34, 64, 0.8);
+        }
+
+        .card-lei h2 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .card-lei p {
+            font-size: 1rem;
+            color: var(--white);
+            text-align: justify;
+        }
+
+        .card-lei strong {
+            color: var(--gold);
+        }
+
+        /* Seção de Citação */
+        .veredito {
+            background: rgba(212, 175, 55, 0.05);
+            padding: 40px;
+            border-radius: 4px;
+            font-family: 'Playfair Display', serif;
+            position: relative;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .veredito::before {
+            content: "“";
+            font-size: 5rem;
+            color: var(--gold);
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            opacity: 0.3;
+        }
+
+        .quote {
+            font-size: 1.4rem;
+            font-style: italic;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .assinatura {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+        }
+
+        /* Botão Voltar Estilizado */
+        .btn-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn-voltar {
+            display: inline-block;
+            padding: 15px 35px;
+            background-color: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-decoration: none;
+            transition: all 0.4s ease;
+        }
+
+        .btn-voltar:hover {
+            background-color: var(--gold);
+            color: var(--navy);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .container { padding: 40px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Parecer Jurídico: Assédio Moral</h1>
+            <p class="intro-text">
+                A distinção técnica entre a ofensa isolada e a conduta sistemática de aniquilamento psicológico no ambiente de trabalho.
+            </p>
+        </header>
+
+        <main class="juridico-grid">
+            
+            <div class="card-lei">
+                <h2>Conceito de Assédio Moral</h2>
+                <p>Diferente do dano comum, o <strong>Assédio Moral</strong> é a exposição reiterada e sistemática a situações humilhantes. Caracteriza-se pela <strong>temporalidade e persistência</strong> de condutas que visam desestabilizar emocionalmente o trabalhador e forçar sua saída.</p>
+            </div>
+
+            <div class="card-lei">
+                <h2>Assédio Moral vs. Dano Moral</h2>
+                <p>O <strong>Dano Moral</strong> pode ser um evento único (ex: uma ofensa verbal isolada). Já o Assédio exige uma <strong>estratégia de exclusão</strong>. Enquanto o dano atinge a honra em um momento, o assédio mina a saúde mental e a dignidade do ser humano de forma progressiva.</p>
+            </div>
+
+            <div class="card-lei">
+                <h2>Reparação e Rescisão Indireta</h2>
+                <p>A prática de assédio autoriza a <strong>Rescisão Indireta</strong> (Art. 483 da CLT), permitindo que o empregado saia da empresa com todos os seus direitos. Além disso, gera indenização por danos morais agravada pelo caráter perverso da perseguição laboral.</p>
+            </div>
+
+        </main>
+
+        <section class="veredito">
+            <span class="quote">
+                O assédio moral é o terrorismo psicológico no trabalho; não fere apenas o patrimônio ou a honra, mas busca o esvaziamento da identidade e do valor do trabalhador enquanto pessoa humana.
+            </span>
+            <span class="assinatura">— Especialista em Direitos da Personalidade no Trabalho</span>
+        </section>
+
+        <div class="btn-container">
+            <a href="index.html" class="btn-voltar">← Voltar à Página Inicial</a>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Painel de Controle - Escritório</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
+        .card { background: white; padding: 20px; margin-bottom: 10px; border-radius: 8px; border-left: 5px solid #D4AF37; shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .data { font-size: 12px; color: gray; }
+        .btn-logout { background: #0a192f; color: gold; padding: 10px; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div style="max-width: 800px; margin: 0 auto;">
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <h1>Mensagens Recebidas</h1>
+            <a href="/login" class="btn-logout">Sair</a>
+        </header>
+
+        {% for contato in contatos | reverse %}
+        <div class="card">
+            <span class="data">{{ contato.data }}</span>
+            <h3>{{ contato.nome }}</h3>
+            <p><strong>WhatsApp:</strong> {{ contato.whatsapp }}</p>
+            <p><strong>Caso:</strong> {{ contato.caso }}</p>
+        </div>
+        {% else %}
+        <p>Nenhum contato recebido ainda.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

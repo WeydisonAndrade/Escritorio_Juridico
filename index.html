@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escritório de Advocacia Trabalhista | Defesa dos Direitos do Trabalhador</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/static/script.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#0f172a',
+                        'navy-light': '#1e293b',
+                        gold: '#b8860b',
+                        'gold-light': '#daa520',
+                        cream: '#fafaf9',
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+                        sans: ['Montserrat', 'system-ui', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body class="bg-cream text-navy antialiased">
+    <!-- Menu de Navegação -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-navy/95 backdrop-blur-sm shadow-lg">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-2">
+                    <span class="font-serif text-2xl font-bold text-gold">Justiça</span>
+                    <span class="font-serif text-2xl font-bold text-white">Trabalhista</span>
+                </a>
+
+                <!-- Menu Desktop -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#quem-somos" class="text-white/90 hover:text-gold transition-colors duration-200">Quem Somos</a>
+                    
+                    <!-- Dropdown Áreas de Atuação -->
+                    <div class="relative group">
+                        <button class="flex items-center gap-1 bg-gold text-navy px-5 py-2.5 rounded font-semibold hover:bg-gold-light transition-all duration-200 shadow-md hover:shadow-lg">
+                            Áreas de Atuação
+                            <svg class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div class="absolute top-full left-0 mt-2 w-72 bg-white rounded-lg shadow-xl border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-2">
+                            <a href="extra.html" class="block px-5 py-3 text-navy hover:bg-gold/10 hover:text-gold transition-colors">Horas Extras</a>
+                            <a href="fgts.html" class="block px-5 py-3 text-navy hover:bg-gold/10 hover:text-gold transition-colors">FGTS</a>
+                            <a href="acidente.html" class="block px-5 py-3 text-navy hover:bg-gold/10 hover:text-gold transition-colors">Acidente de Trabalho</a>
+                            <a href="assedio.html" class="block px-5 py-3 text-navy hover:bg-gold/10 hover:text-gold transition-colors">Assédio Moral</a>
+                            <a href="justa.html" class="block px-5 py-3 text-navy hover:bg-gold/10 hover:text-gold transition-colors">Reversão de Justa Causa</a>
+                            <a href="danos.html" class="block px-5 py-3 text-navy hover:bg-gold/10 hover:text-gold transition-colors">Danos Morais</a>
+                        </div>
+                    </div>
+
+                    <a href="#especialidades" class="text-white/90 hover:text-gold transition-colors duration-200">Nossa Especialidade</a>
+                    <a href="#contato" class="text-white/90 hover:text-gold transition-colors duration-200">Contato</a>
+                </div>
+
+                <!-- Menu Mobile -->
+                <button id="menu-toggle" class="md:hidden text-white p-2" aria-label="Abrir menu">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Menu Mobile Expandido -->
+            <div id="mobile-menu" class="hidden md:hidden pb-4">
+                <div class="flex flex-col gap-4">
+                    <a href="#quem-somos" class="text-white/90 hover:text-gold">Quem Somos</a>
+                    <div class="text-gold font-semibold">Áreas de Atuação</div>
+                    <div class="pl-4 flex flex-col gap-2">
+                        <a href="extra.html" class="text-white/80 text-sm hover:text-gold">Horas Extras</a>
+                        <a href="fgts.html" class="text-white/80 text-sm hover:text-gold">FGTS</a>
+                        <a href="acidente.html" class="text-white/80 text-sm hover:text-gold">Acidente de Trabalho</a>
+                        <a href="assedio.html" class="text-white/80 text-sm hover:text-gold">Assédio Moral</a>
+                        <a href="justa.html" class="text-white/80 text-sm hover:text-gold">Reversão de Justa Causa</a>
+                        <a href="danos.html" class="text-white/80 text-sm hover:text-gold">Danos Morais</a>
+                    </div>
+                    <a href="#especialidades" class="text-white/90 hover:text-gold">Nossa Especialidade</a>
+                    <a href="#contato" class="text-white/90 hover:text-gold">Contato</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Seção Hero -->
+    <section class="hero-bg relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <div class="absolute inset-0 bg-navy/40"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-gold/10 via-transparent to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-navy to-transparent"></div>
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
+                Seus Direitos Trabalhistas<br>
+                <span class="text-gold">Merecem Respeito</span>
+            </h1>
+            <p class="text-xl text-white/80 mb-12 max-w-2xl mx-auto font-sans">
+                Defendemos com excelência os interesses do trabalhador. Expertise, compromisso e transparência em cada caso.
+            </p>
+            <a href="#contato" class="inline-block bg-gold text-navy px-10 py-4 rounded font-semibold text-lg hover:bg-gold-light transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                Agendar Consulta
+            </a>
+        </div>
+    </section>
+
+    <!-- Seção Quem Somos -->
+    <section id="quem-somos" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="font-serif text-4xl md:text-5xl font-bold text-navy mb-6 text-center">Quem Somos</h2>
+            <p class="text-navy-light text-lg text-center max-w-3xl mx-auto leading-relaxed">
+                Somos um escritório especializado em Direito do Trabalho, com vasta experiência na defesa dos direitos dos trabalhadores. 
+                Nossa missão é assegurar que cada cliente receba o atendimento jurídico que merece, com empatia e excelência técnica.
+            </p>
+        </div>
+    </section>
+
+    <!-- Seção Especialidades -->
+    <section id="especialidades" class="py-24 bg-navy-light">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="font-serif text-4xl md:text-5xl font-bold text-white mb-4 text-center">Nossa Especialidade</h2>
+        <p class="text-white/70 text-center mb-16 max-w-2xl mx-auto">Principais áreas de atuação para proteger seus direitos</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <a href="extra.html" class="block bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-t-4 border-gold hover:-translate-y-2 no-underline group">
+                <div class="text-gold text-3xl mb-4 group-hover:scale-110 transition-transform duration-300">⏰</div>
+                <h3 class="font-serif text-xl font-bold text-navy mb-3">Horas Extras</h3>
+                <p class="text-navy-light/80">Regularização e cobrança de horas extras não pagas ou incorretamente remuneradas conforme a CLT.</p>
+            </a>
+
+            <a href="fgts.html" class="block bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-t-4 border-gold hover:-translate-y-2 no-underline group">
+                <div class="text-gold text-3xl mb-4 group-hover:scale-110 transition-transform duration-300">💰</div>
+                <h3 class="font-serif text-xl font-bold text-navy mb-3">FGTS</h3>
+                <p class="text-navy-light/80">Orientação sobre saques, multa de 40%, contas inativas e demais questões relacionadas ao Fundo de Garantia.</p>
+            </a>
+
+            <a href="acidente.html" class="block bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-t-4 border-gold hover:-translate-y-2 no-underline group">
+                <div class="text-gold text-3xl mb-4 group-hover:scale-110 transition-transform duration-300">🏥</div>
+                <h3 class="font-serif text-xl font-bold text-navy mb-3">Acidente de Trabalho</h3>
+                <p class="text-navy-light/80">Indenizações por acidentes laborais, doenças ocupacionais e responsabilidade do empregador.</p>
+            </a>
+
+            <a href="assedio.html" class="block bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-t-4 border-gold hover:-translate-y-2 no-underline group">
+                <div class="text-gold text-3xl mb-4 group-hover:scale-110 transition-transform duration-300">🛡️</div>
+                <h3 class="font-serif text-xl font-bold text-navy mb-3">Assédio Moral</h3>
+                <p class="text-navy-light/80">Combate a práticas abusivas no ambiente de trabalho e busca por reparação aos danos sofridos.</p>
+            </a>
+
+            <a href="justa.html" class="block bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-t-4 border-gold hover:-translate-y-2 no-underline group">
+                <div class="text-gold text-3xl mb-4 group-hover:scale-110 transition-transform duration-300">⚖️</div>
+                <h3 class="font-serif text-xl font-bold text-navy mb-3">Reversão de Justa Causa</h3>
+                <p class="text-navy-light/80">Defesa contra demissões injustas, pedidos de reintegração e verbas rescisórias.</p>
+            </a>
+
+            <a href="danos.html" class="block bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border-t-4 border-gold hover:-translate-y-2 no-underline group">
+                <div class="text-gold text-3xl mb-4 group-hover:scale-110 transition-transform duration-300">💎</div>
+                <h3 class="font-serif text-xl font-bold text-navy mb-3">Danos Morais</h3>
+                <p class="text-navy-light/80">Pleiteamos indenizações por ofensas à dignidade, honra e integridade do trabalhador.</p>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+    <!-- Formulário de Contato -->
+    <section id="contato" class="py-24 bg-cream">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="font-serif text-4xl md:text-5xl font-bold text-navy mb-4 text-center">Entre em Contato</h2>
+            <p class="text-navy-light text-center mb-12">Descreva seu caso e retornaremos em breve para agendar sua consulta.</p>
+
+            <div id="form-mensagem" class="hidden mb-6 p-4 rounded-lg"></div>
+
+
+
+            <form id="form-contato"  action="/enviar_contato" method="POST" class="bg-white rounded-2xl shadow-xl p-8 md:p-12 space-y-6 border border-gray-100">
+                <div>
+                    <label for="nome" class="block text-navy font-semibold mb-2">Nome completo</label>
+                    <input type="text" id="nome" name="nome" required
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all"
+                        placeholder="Digite seu nome">
+                </div>
+                <div>
+                    <label for="whatsapp" class="block text-navy font-semibold mb-2">WhatsApp</label>
+                    <input type="tel" id="whatsapp" name="whatsapp" required
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all"
+                        placeholder="(00) 00000-0000">
+                </div>
+                <div>
+                    <label for="caso" class="block text-navy font-semibold mb-2">Descreva seu caso</label>
+                    <textarea id="caso" name="caso" rows="5" required
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all resize-none"
+                        placeholder="Conte-nos brevemente sobre sua situação para que possamos auxiliá-lo da melhor forma..."></textarea>
+                </div>
+                <button type="submit" id="btn-enviar" class="w-full bg-gold text-navy py-4 rounded-lg font-semibold text-lg hover:bg-gold-light transition-colors duration-200 shadow-md hover:shadow-lg">
+                    Enviar
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="bg-navy py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white/70">
+            <p class="font-serif text-gold text-xl font-semibold mb-2">Justiça Trabalhista</p>
+            <p>© 2026 Escritório de Advocacia. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
