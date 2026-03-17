@@ -2,12 +2,24 @@ import os
 import json
 from datetime import datetime
 from flask import Flask, request, jsonify, render_template, redirect, url_for, session
-from flask_cors import CORS
 
 app = Flask(__name__, template_folder='.')
-app.secret_key = os.environ.get('SECRET_KEY', 'chave-secreta-desenvolvimento-justica-trabalhista')
-# O CORS permite que seu index.html (mesmo aberto fora do servidor) acesse a API
-CORS(app)
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'chave-secreta-desenvolvimento-justica-trabalhista')
+
+# Configurações de sessão mais seguras
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE="Lax",
+    SESSION_COOKIE_SECURE=False,  # ajuste para True em produção com HTTPS
+)
+
+# Tenta habilitar CORS se flask_cors estiver disponível
+try:
+    from flask_cors import CORS
+    CORS(app)
+except ImportError:
+    # Em ambientes sem flask_cors instalado, segue sem CORS adicional
+    pass
 
 
 @app.route('/login', methods=['GET', 'POST'])
